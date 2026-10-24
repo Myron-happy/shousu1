@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手速挑战</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  height:100vh;
+  background:#111;
+  color:#fff;
+  font-size:22px;
+  text-align:center;
+  user-select:none;
+}
+.info{padding:20px}
+#box{
+  width:100%;
+  height:calc(100vh - 120px);
+  background:#2266cc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+}
+</style>
+</head>
+<body>
+<div class="info">
+  <div>剩余时间：<span id="time">10</span> s</div>
+  <div>点击：<span id="cnt">0</span> | CPS：<span id="cps">0</span></div>
+</div>
+<div id="box">点我开始</div>
+<script>
+const box = document.getElementById('box');
+const timeEl = document.getElementById('time');
+const cntEl = document.getElementById('cnt');
+const cpsEl = document.getElementById('cps');
+let count = 0;
+let time = 10;
+let running = false;
+let timer;
+
+box.onclick = ()=>{
+  if(!running){
+    running=true;
+    count=0;
+    time=10;
+    box.innerText = "快点！";
+    timer = setInterval(()=>{
+      time--;
+      timeEl.innerText=time;
+      if(time<=0){
+        clearInterval(timer);
+        running=false;
+        let resCps = (count/10).toFixed(2);
+        box.innerText = `结束！\n共点击${count}次\nCPS:${resCps}`;
+      }
+    },1000)
+  }
+  if(running){
+    count++;
+    cntEl.innerText=count;
+    let nowLeft = 10-time;
+    if(nowLeft>0) cpsEl.innerText=(count/nowLeft).toFixed(2);
+  }
+}
+</script>
+</body>
+</html>
